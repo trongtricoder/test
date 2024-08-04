@@ -3,8 +3,11 @@ const msg = document.querySelector('.msg');
 const all_posts = document.querySelector('.all-post');
 const edit_post = document.getElementById('edit_post');
 const comment_user = document.getElementById('comment-user');
+const loginSignup = document.getElementById('loginSignup');
 
-
+loginSignup.addEventListener('click', () => {
+    window.location.href = "login.html";
+})
 
 post_form.onsubmit = (e) => {
     e.preventDefault();

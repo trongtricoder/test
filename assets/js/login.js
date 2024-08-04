@@ -1,22 +1,26 @@
-/*===== FOCUS =====*/
-const inputs = document.querySelectorAll(".form__input")
+/*===== LOGIN SHOW and HIDDEN =====*/
+const signUp = document.getElementById('sign-up'),
+    signIn = document.getElementById('sign-in'),
+    loginIn = document.getElementById('login-in'),
+    loginUp = document.getElementById('login-up')
 
-/*=== Add focus ===*/
-function addfocus(){
-    let parent = this.parentNode.parentNode
-    parent.classList.add("focus")
-}
 
-/*=== Remove focus ===*/
-function remfocus(){
-    let parent = this.parentNode.parentNode
-    if(this.value == ""){
-        parent.classList.remove("focus")
-    }
-}
+signUp.addEventListener('click', ()=>{
+    // Remove classes first if they exist
+    loginIn.classList.remove('block')
+    loginUp.classList.remove('none')
 
-/*=== To call function===*/
-inputs.forEach(input=>{
-    input.addEventListener("focus",addfocus)
-    input.addEventListener("blur",remfocus)
+    // Add classes
+    loginIn.classList.toggle('none')
+    loginUp.classList.toggle('block')
+})
+
+signIn.addEventListener('click', ()=>{
+    // Remove classes first if they exist
+    loginIn.classList.remove('none')
+    loginUp.classList.remove('block')
+
+    // Add classes
+    loginIn.classList.toggle('block')
+    loginUp.classList.toggle('none')
 })

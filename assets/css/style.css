@@ -42,6 +42,18 @@ body{
     align-items: center;
 }
 
+#loginSignup{
+    border: none;
+    background-color: grey;
+    color: #fff;
+    margin-right: 19%;    
+}
+
+#loginSignup:hover{
+    background-color: black;
+    color: white;
+}
+
 .ins-img{
     height: 100%;
     margin-top: 7px;
