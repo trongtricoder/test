@@ -14,71 +14,19 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
+const db = getFirestore();
 const googleLogin = document.getElementById("google-login-btn");
 const loginForm = document.getElementById("login-in");
 const signupForm = document.getElementById("login-up");
+
 googleLogin.addEventListener("click", function () {
-    signInWithPopup(auth)
-        .then((result) => {
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const user = result.user;
-            window.location.href = "index.html";
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        })
-})
-
-
-function showMessage(message, divId) {
-    var messageDiv = document.getElementById(divId);
-    messageDiv.style.display = "block";
-    messageDiv.innerHTML = message;
-    messageDiv.style.opacity = 1;
-    setTimeout(function () {
-        messageDiv.style.opacity = 0;
-    }, 3000);
-}
-
-signupForm.addEventListener('click', (event) => {
-    event.preventDefault();
-
-    const emailSignUp = document.getElementById("emailSignUp");
-    const usernameSignUp = document.getElementById("usernameSignUp");
-    const passwordSignUp = document.getElementById("passwordSignUp");
-
-
-    const auth = getAuth();
-    const db = getFirestore();
-
-    createUserWithEmailAndPassword(auth, emailSignUp.value, passwordSignUp.value, usernameSignUp.value)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            const userData = {
-                email: emailSignUp,
-                password: passwordSignUp,
-                username: usernameSignUp
-            };
-            showMessage('Account Created Successfully', 'signUpMessage');
-            const docRef = doc(db, "users", user.uid);
-            setDoc(docRef, userData)
-                .then(() => {
-                    window.location.href = 'index.html';
-                })
-                .catch((error) => {
-                    console.error("error writing document", error);
-                });
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            if (errorCode == 'auth/email-already-in-use') {
-                showMessage('Email Address Already Exists !!!', 'signUpMessage');
-            }
-            else {
-                showMessage('unable to create User', 'signUpMessage');
-            }
-        })
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider).then((result) => {
+        console.log(result.user);
+        window.location.href = 'index.html';
+    }).catch((error) => {
+        console.error("Error during Google sign-in:", error);
+    });
 });
 
 loginForm.addEventListener('click', (event) => {
@@ -105,3 +53,47 @@ loginForm.addEventListener('click', (event) => {
             }
         })
 })
+
+signupForm.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    const emailSignUp = document.getElementById("emailSignUp").value;
+    const usernameSignUp = document.getElementById("usernameSignUp").value;
+    const passwordSignUp = document.getElementById("passwordSignUp").value;
+
+    createUserWithEmailAndPassword(auth, emailSignUp, passwordSignUp)
+        .then((userCredential) => {
+            const user = userCredential.user;
+            const userData = {
+                email: emailSignUp,
+                password: passwordSignUp,
+                username: usernameSignUp
+            };
+            showMessage('Account Created Successfully', 'signUpMessage');
+            const docRef = doc(db, "users", user.uid);
+            setDoc(docRef, userData)
+                .then(() => {
+                    console.log("User data saved to Firestore");
+                })
+                .catch((error) => {
+                    console.error("Error saving user data to Firestore: ", error);
+                    showMessage(`Error: ${error.message}`, 'signUpMessage');
+                });
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error(`Error [${errorCode}]: ${errorMessage}`);
+            showMessage(`Error: ${errorMessage}`, 'signUpMessage');
+        });
+});
+
+function showMessage(message, divId) {
+    var messageDiv = document.getElementById(divId);
+    messageDiv.style.display = "block";
+    messageDiv.innerHTML = message;
+    messageDiv.style.opacity = 1;
+    setTimeout(function () {
+        messageDiv.style.opacity = 0;
+    }, 3000);
+}
