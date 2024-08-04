@@ -83,12 +83,12 @@ signupForm.addEventListener('click', (event) => {
 
 loginForm.addEventListener('click', (event) => {
     event.preventDefault();
-    const usernameSignIn = document.getElementById("usernameSignIn");
+    const emailSignIn = document.getElementById("emailSignIn");
     const passwordSignIn = document.getElementById("passwordSignIn");
 
     const auth = getAuth(); 
 
-    signInWithEmailAndPassword(auth, usernameSignIn.value, passwordSignIn.value)
+    signInWithEmailAndPassword(auth, emailSignIn.value, passwordSignIn.value)
         .then((userCredential) => {
             showMessage('login is successful', 'signInMessage');
             const user = userCredential.user;
