@@ -90,10 +90,6 @@ img{
   animation-name: animate-login;
 }
 
-button{
-  border: none;
-}
-
 #signinBtn {
   width: 100%;
 }

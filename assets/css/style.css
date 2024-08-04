@@ -43,9 +43,10 @@ body{
 }
 
 #loginSignup{
-    border: none;
-    background-color: grey;
-    color: #fff;
+    border: 3px;
+    background-color: white;
+    color: black;
+    border-radius: 12px;
     margin-right: 19%;    
 }
 
